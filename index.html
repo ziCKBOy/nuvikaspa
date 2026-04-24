@@ -4,475 +4,539 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nuvika SpA — Soluciones reales para empresas reales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --azul:       #1B4FFF;
-      --azul-oscuro:#0E2FA3;
-      --acento:     #00D4B4;
-      --gris-bg:    #F5F7FF;
-      --gris-texto: #4A5568;
-      --blanco:     #FFFFFF;
-      --negro:      #0D0D1A;
-      --radio:      12px;
-      --sombra:     0 4px 24px rgba(27,79,255,.12);
+      --bg:         #080810;
+      --bg2:        #0d0d1a;
+      --surface:    rgba(255,255,255,.04);
+      --border:     rgba(255,255,255,.08);
+      --border-hi:  rgba(139,92,246,.4);
+      --txt:        #e8e8f0;
+      --txt-muted:  #7878a0;
+      --purple:     #8B5CF6;
+      --purple-hi:  #a78bfa;
+      --cyan:       #06B6D4;
+      --pink:       #EC4899;
+      --green:      #10B981;
+      --grad:       linear-gradient(135deg, #8B5CF6, #06B6D4);
+      --grad-text:  linear-gradient(135deg, #a78bfa 0%, #06B6D4 50%, #10B981 100%);
+      --radio:      14px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      color: var(--negro);
-      background: var(--blanco);
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--txt);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    /* ─── UTILIDADES ─── */
+    .grad-text {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ─── CANVAS DE PARTÍCULAS (fondo global) ─── */
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; opacity: .35;
+    }
+
+    /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(255,255,255,.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(27,79,255,.08);
-      transition: box-shadow .3s;
+      padding: .9rem 2rem;
+      background: rgba(8,8,16,.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color .3s;
     }
-    nav.scrolled { box-shadow: var(--sombra); }
+    nav.scrolled { border-bottom-color: rgba(139,92,246,.2); }
 
     .nav-logo {
       display: flex; align-items: center; gap: .6rem;
-      text-decoration: none; color: var(--negro);
+      text-decoration: none; color: var(--txt);
     }
-    .nav-logo svg { width: 36px; height: 36px; }
-    .nav-logo span { font-size: 1.3rem; font-weight: 700; letter-spacing: -.5px; }
-    .nav-logo span em { color: var(--azul); font-style: normal; }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 18px rgba(139,92,246,.45);
+    }
+    .logo-mark svg { width: 18px; height: 18px; fill: #fff; }
+    .nav-logo span { font-size: 1.15rem; font-weight: 800; letter-spacing: -.4px; }
+    .nav-logo span em { color: var(--purple-hi); font-style: normal; }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      text-decoration: none; color: var(--gris-texto);
-      font-weight: 500; font-size: .95rem;
+      text-decoration: none; color: var(--txt-muted);
+      font-weight: 500; font-size: .9rem;
       transition: color .2s;
     }
-    .nav-links a:hover { color: var(--azul); }
+    .nav-links a:hover { color: var(--txt); }
 
     .nav-cta {
-      background: var(--azul); color: var(--blanco);
-      border: none; padding: .55rem 1.4rem;
-      border-radius: 999px; font-size: .9rem; font-weight: 600;
+      background: var(--grad);
+      color: #fff; border: none;
+      padding: .5rem 1.3rem;
+      border-radius: 999px; font-size: .88rem; font-weight: 600;
       cursor: pointer; text-decoration: none;
-      transition: background .2s, transform .15s;
+      box-shadow: 0 0 20px rgba(139,92,246,.3);
+      transition: opacity .2s, transform .15s, box-shadow .2s;
     }
-    .nav-cta:hover { background: var(--azul-oscuro); transform: translateY(-1px); }
+    .nav-cta:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 0 30px rgba(139,92,246,.5); }
 
-    /* hamburger */
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--negro); border-radius: 2px; transition: .3s; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--txt); border-radius: 2px; }
 
-    /* ── HERO ── */
+    /* ─── HERO ─── */
     #hero {
+      position: relative; z-index: 1;
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      padding: 7rem 2rem 4rem;
-      background: linear-gradient(135deg, #E8EDFF 0%, #F0FFFE 60%, var(--blanco) 100%);
-      position: relative; overflow: hidden;
+      padding: 9rem 1.5rem 5rem;
+      overflow: hidden;
     }
 
-    .hero-blob {
-      position: absolute; border-radius: 50%; filter: blur(70px); opacity: .45;
+    /* orbes de luz */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); pointer-events: none;
     }
-    .blob-1 { width: 520px; height: 520px; background: #c3d0ff; top: -120px; right: -80px; }
-    .blob-2 { width: 340px; height: 340px; background: #b2f5ea; bottom: 40px; left: -60px; }
+    .orb-1 { width: 600px; height: 600px; background: rgba(139,92,246,.18); top: -150px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(6,182,212,.12); bottom: -80px; left: -80px; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(236,72,153,.1); top: 40%; left: 35%; }
+
+    /* grid de puntos decorativo */
+    .dot-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
 
     .hero-inner {
       position: relative; z-index: 1;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-      max-width: 1100px; width: 100%; align-items: center;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+      max-width: 1120px; width: 100%; align-items: center;
     }
 
-    .hero-badge {
+    .hero-pill {
       display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(27,79,255,.1); color: var(--azul);
-      padding: .35rem .9rem; border-radius: 999px;
-      font-size: .82rem; font-weight: 600; margin-bottom: 1.2rem;
+      border: 1px solid rgba(139,92,246,.35);
+      background: rgba(139,92,246,.08);
+      color: var(--purple-hi);
+      padding: .3rem .9rem .3rem .45rem; border-radius: 999px;
+      font-size: .78rem; font-weight: 600; margin-bottom: 1.4rem;
     }
-    .hero-badge::before { content: '●'; font-size: .5rem; }
+    .hero-pill-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; } 50% { opacity: .4; }
+    }
 
     .hero-titulo {
-      font-size: clamp(2rem, 4.5vw, 3.4rem);
-      font-weight: 800; line-height: 1.15;
-      letter-spacing: -.5px; margin-bottom: 1rem;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -1.5px; margin-bottom: 1.2rem;
     }
-    .hero-titulo span { color: var(--azul); }
 
     .hero-tagline {
-      font-size: 1.2rem; color: var(--gris-texto);
-      margin-bottom: 2rem; max-width: 480px;
+      font-size: 1.1rem; color: var(--txt-muted);
+      margin-bottom: 2.2rem; max-width: 460px; line-height: 1.75;
     }
 
     .hero-botones { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-    .btn-primario {
-      background: var(--azul); color: var(--blanco);
-      padding: .85rem 2rem; border-radius: 999px;
-      font-size: 1rem; font-weight: 700; text-decoration: none;
-      box-shadow: 0 6px 20px rgba(27,79,255,.35);
-      transition: background .2s, transform .15s, box-shadow .2s;
+    .btn-grad {
+      background: var(--grad); color: #fff;
+      padding: .8rem 1.9rem; border-radius: 999px;
+      font-size: .97rem; font-weight: 700; text-decoration: none;
+      box-shadow: 0 0 28px rgba(139,92,246,.35);
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      display: inline-flex; align-items: center; gap: .5rem;
     }
-    .btn-primario:hover {
-      background: var(--azul-oscuro);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(27,79,255,.4);
-    }
+    .btn-grad:hover { opacity: .88; transform: translateY(-2px); box-shadow: 0 0 40px rgba(139,92,246,.5); }
 
-    .btn-secundario {
-      background: transparent; color: var(--azul);
-      padding: .85rem 2rem; border-radius: 999px;
-      font-size: 1rem; font-weight: 700; text-decoration: none;
-      border: 2px solid var(--azul);
-      transition: background .2s, color .2s, transform .15s;
+    .btn-ghost {
+      background: var(--surface); color: var(--txt);
+      padding: .8rem 1.9rem; border-radius: 999px;
+      font-size: .97rem; font-weight: 600; text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color .2s, background .2s, transform .15s;
+      display: inline-flex; align-items: center; gap: .5rem;
     }
-    .btn-secundario:hover {
-      background: var(--azul); color: var(--blanco);
-      transform: translateY(-2px);
-    }
+    .btn-ghost:hover { border-color: var(--border-hi); background: rgba(139,92,246,.08); transform: translateY(-2px); }
 
-    /* tarjeta flotante hero */
-    .hero-visual {
-      display: flex; justify-content: center; align-items: center;
+    /* terminal hero */
+    .hero-terminal {
+      background: rgba(13,13,26,.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(139,92,246,.1);
+      animation: flotar 5s ease-in-out infinite;
     }
-
-    .hero-card {
-      background: var(--blanco);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 20px 60px rgba(27,79,255,.15);
-      width: 340px;
-      animation: flotar 4s ease-in-out infinite;
-    }
-
     @keyframes flotar {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-12px); }
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%       { transform: translateY(-14px) rotate(.3deg); }
     }
 
-    .hero-card-header {
-      display: flex; align-items: center; gap: .8rem;
-      margin-bottom: 1.5rem;
+    .terminal-bar {
+      display: flex; align-items: center; gap: .5rem;
+      padding: .8rem 1rem;
+      background: rgba(255,255,255,.03);
+      border-bottom: 1px solid var(--border);
     }
-    .hero-card-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--azul), var(--acento));
-      display: flex; align-items: center; justify-content: center;
-    }
-    .hero-card-icon svg { width: 22px; height: 22px; fill: var(--blanco); }
-    .hero-card-title { font-weight: 700; font-size: 1rem; }
-    .hero-card-sub   { font-size: .78rem; color: var(--gris-texto); }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-red   { background: #FF5F57; }
+    .t-amber { background: #FEBC2E; }
+    .t-green { background: #28C840; }
+    .t-title { margin-left: .4rem; font-size: .72rem; color: var(--txt-muted); font-family: monospace; }
 
-    .hero-stat {
-      display: flex; flex-direction: column;
-      margin-bottom: 1.2rem;
-    }
-    .stat-label { font-size: .75rem; color: var(--gris-texto); margin-bottom: .3rem; }
-    .stat-bar { height: 8px; background: #E8EDFF; border-radius: 4px; overflow: hidden; }
-    .stat-fill {
-      height: 100%; border-radius: 4px;
-      background: linear-gradient(90deg, var(--azul), var(--acento));
-    }
+    .terminal-body { padding: 1.4rem 1.5rem; font-family: 'Courier New', monospace; font-size: .82rem; }
 
-    .hero-kpis {
-      display: flex; gap: 1rem; margin-top: 1.2rem;
+    .t-line { display: flex; gap: .5rem; margin-bottom: .55rem; }
+    .t-prompt { color: var(--purple-hi); user-select: none; }
+    .t-cmd    { color: #e8e8f0; }
+    .t-out    { color: var(--txt-muted); padding-left: 1rem; font-size: .78rem; }
+    .t-success{ color: var(--green); }
+    .t-info   { color: var(--cyan); }
+    .t-cursor {
+      display: inline-block; width: 7px; height: 14px;
+      background: var(--purple-hi); vertical-align: middle;
+      animation: blink .9s infinite;
     }
-    .kpi {
-      flex: 1; background: var(--gris-bg); border-radius: 10px;
-      padding: .7rem; text-align: center;
-    }
-    .kpi-num { font-size: 1.3rem; font-weight: 800; color: var(--azul); }
-    .kpi-lab { font-size: .7rem; color: var(--gris-texto); }
+    @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 
-    /* ── LOGOS / CONFIANZA ── */
+    .terminal-kpis {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border-top: 1px solid var(--border);
+    }
+    .t-kpi {
+      padding: 1rem; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .t-kpi:last-child { border-right: none; }
+    .t-kpi-num { font-size: 1.4rem; font-weight: 800; }
+    .t-kpi-lab { font-size: .68rem; color: var(--txt-muted); margin-top: .1rem; }
+
+    /* ─── TRUST BAND ─── */
     .trust-band {
-      background: var(--gris-bg);
-      padding: 1.5rem 2rem;
-      text-align: center;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.4rem 1.5rem;
+      background: rgba(255,255,255,.015);
+      overflow: hidden;
     }
-    .trust-band p {
-      font-size: .8rem; color: var(--gris-texto);
-      text-transform: uppercase; letter-spacing: 1px;
+    .trust-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; align-items: center; gap: 2rem;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .trust-label {
+      font-size: .72rem; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--txt-muted); white-space: nowrap;
+    }
+    .trust-divider { width: 1px; height: 20px; background: var(--border); }
+    .trust-logos { display: flex; gap: 2.5rem; flex-wrap: wrap; align-items: center; }
+    .trust-logos span {
+      font-size: .88rem; font-weight: 700;
+      color: rgba(255,255,255,.2); letter-spacing: .3px;
+      transition: color .2s;
+    }
+    .trust-logos span:hover { color: rgba(255,255,255,.5); }
+
+    /* ─── SECCIÓN GENÉRICA ─── */
+    section { position: relative; z-index: 1; padding: 6rem 1.5rem; }
+
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--purple-hi);
       margin-bottom: 1rem;
     }
-    .trust-logos {
-      display: flex; align-items: center; justify-content: center;
-      gap: 2.5rem; flex-wrap: wrap;
-    }
-    .trust-logos span {
-      font-size: 1rem; font-weight: 700; color: #b0b8cc;
-      letter-spacing: .5px;
-    }
-
-    /* ── SECCIÓN GENÉRICA ── */
-    section { padding: 5rem 2rem; }
-
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    .section-badge {
-      display: inline-block;
-      background: rgba(27,79,255,.08); color: var(--azul);
-      padding: .3rem .9rem; border-radius: 999px;
-      font-size: .8rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-bottom: .8rem;
+    .section-eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 1px; background: var(--purple-hi);
     }
 
     .section-titulo {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 800; margin-bottom: 1rem;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900; letter-spacing: -1px; margin-bottom: .8rem;
     }
 
-    .section-subtitulo {
-      color: var(--gris-texto); font-size: 1.05rem;
-      max-width: 560px; margin-bottom: 3rem;
+    .section-sub {
+      color: var(--txt-muted); font-size: 1rem;
+      max-width: 520px; line-height: 1.75; margin-bottom: 3.5rem;
     }
 
-    /* ── SERVICIOS ── */
-    #servicios { background: var(--blanco); }
+    /* ─── SERVICIOS ─── */
+    #servicios { background: var(--bg); }
 
     .servicios-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
     }
 
     .servicio-card {
-      background: var(--gris-bg);
-      border-radius: var(--radio);
-      padding: 2rem;
-      border: 1.5px solid transparent;
-      transition: border-color .25s, box-shadow .25s, transform .25s;
+      background: var(--bg2);
+      padding: 2rem 2rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background .3s;
       cursor: default;
     }
-    .servicio-card:hover {
-      border-color: var(--azul);
-      box-shadow: var(--sombra);
-      transform: translateY(-4px);
+    .servicio-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(139,92,246,.07), transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .servicio-card:hover::before { opacity: 1; }
+    .servicio-card:hover { background: rgba(139,92,246,.04); }
+
+    .servicio-num {
+      font-size: .7rem; font-weight: 700;
+      color: var(--txt-muted); letter-spacing: 1px;
+      margin-bottom: 1.2rem;
     }
 
-    .servicio-icono {
-      width: 52px; height: 52px;
-      border-radius: 12px;
+    .servicio-icon-wrap {
+      width: 46px; height: 46px; border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.2rem;
-      font-size: 1.5rem;
+      font-size: 1.3rem; margin-bottom: 1.2rem;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .servicio-card:hover .servicio-icon-wrap {
+      border-color: rgba(139,92,246,.4);
+      box-shadow: 0 0 20px rgba(139,92,246,.2);
     }
 
     .servicio-nombre {
-      font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem;
+      font-size: 1rem; font-weight: 700; margin-bottom: .5rem; color: var(--txt);
     }
 
     .servicio-desc {
-      color: var(--gris-texto); font-size: .93rem; line-height: 1.65;
+      color: var(--txt-muted); font-size: .88rem; line-height: 1.7;
     }
 
-    .servicio-tag {
-      display: inline-block; margin-top: 1rem;
-      background: rgba(27,79,255,.08); color: var(--azul);
-      padding: .25rem .7rem; border-radius: 999px;
-      font-size: .75rem; font-weight: 600;
+    .servicio-tags {
+      display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.4rem;
+    }
+    .tag {
+      font-size: .68rem; font-weight: 600;
+      padding: .2rem .6rem; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--txt-muted);
     }
 
-    /* ── CTA INTERMEDIO ── */
-    .cta-intermedio {
-      background: linear-gradient(135deg, var(--azul) 0%, #1239CC 100%);
-      border-radius: 20px;
-      padding: 3.5rem 2.5rem;
+    /* ─── CTA INTERMEDIO ─── */
+    #cta-mid { padding: 2rem 1.5rem 6rem; }
+
+    .cta-box {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, rgba(139,92,246,.15) 0%, rgba(6,182,212,.1) 100%);
+      border: 1px solid rgba(139,92,246,.25);
+      border-radius: 24px;
+      padding: 4rem 3rem;
       text-align: center;
-      color: var(--blanco);
-      margin: 0 auto 0;
-      max-width: 900px;
+      max-width: 860px; margin: 0 auto;
     }
-    .cta-intermedio h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 800; margin-bottom: .7rem; }
-    .cta-intermedio p  { opacity: .85; margin-bottom: 1.8rem; font-size: 1.05rem; }
-    .btn-blanco {
-      background: var(--blanco); color: var(--azul);
-      padding: .85rem 2.2rem; border-radius: 999px;
-      font-size: 1rem; font-weight: 700; text-decoration: none;
-      display: inline-block;
-      transition: background .2s, color .2s, transform .15s;
+    .cta-box::before {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(139,92,246,.15); filter: blur(60px);
+      pointer-events: none;
     }
-    .btn-blanco:hover { background: #e8edff; transform: translateY(-2px); }
+    .cta-box h2 { font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-weight: 900; letter-spacing: -.8px; margin-bottom: .8rem; }
+    .cta-box p  { color: var(--txt-muted); font-size: 1rem; margin-bottom: 2rem; }
 
-    #cta-mid { padding: 3rem 2rem; background: var(--gris-bg); }
-
-    /* ── CONTACTO ── */
-    #contacto { background: var(--blanco); }
+    /* ─── CONTACTO ─── */
+    #contacto { background: var(--bg2); }
 
     .contacto-grid {
-      display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start;
+      display: grid; grid-template-columns: 1fr 1.3fr; gap: 5rem; align-items: start;
     }
 
-    .contacto-info h2 {
-      font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 800; margin-bottom: 1rem;
-    }
-    .contacto-info p { color: var(--gris-texto); margin-bottom: 2rem; line-height: 1.7; }
+    .contacto-info .section-titulo { margin-bottom: 1rem; }
+    .contacto-info p { color: var(--txt-muted); margin-bottom: 2.5rem; line-height: 1.75; }
 
+    .contacto-items { display: flex; flex-direction: column; gap: .8rem; }
     .contacto-item {
-      display: flex; align-items: center; gap: .8rem;
-      margin-bottom: 1rem; color: var(--gris-texto); font-size: .93rem;
+      display: flex; align-items: center; gap: .9rem;
+      font-size: .9rem; color: var(--txt-muted);
     }
-    .contacto-item span:first-child {
-      font-size: 1.3rem; width: 36px; height: 36px;
-      background: rgba(27,79,255,.08); border-radius: 8px;
+    .ci-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
       display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
     }
 
-    /* Formulario */
-    .form-contacto {
-      background: var(--gris-bg);
+    /* formulario */
+    .form-wrap {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
       border-radius: 20px;
       padding: 2.5rem;
     }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
     .form-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.2rem; }
 
     .form-group label {
-      font-size: .85rem; font-weight: 600; color: var(--negro);
+      font-size: .78rem; font-weight: 600;
+      color: var(--txt-muted); text-transform: uppercase; letter-spacing: .8px;
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
       padding: .75rem 1rem;
-      border: 1.5px solid #D8DEEE;
+      border: 1px solid var(--border);
       border-radius: var(--radio);
-      font-size: .95rem; font-family: inherit;
-      background: var(--blanco); color: var(--negro);
+      font-size: .93rem; font-family: inherit;
+      background: rgba(255,255,255,.03); color: var(--txt);
       transition: border-color .2s, box-shadow .2s;
       outline: none;
     }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--txt-muted); opacity: .5; }
+    .form-group select option { background: #1a1a2e; color: var(--txt); }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      border-color: var(--azul);
-      box-shadow: 0 0 0 3px rgba(27,79,255,.12);
+      border-color: rgba(139,92,246,.5);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.1);
     }
-
     .form-group textarea { resize: vertical; min-height: 110px; }
 
     .btn-enviar {
       width: 100%; padding: .9rem;
-      background: var(--azul); color: var(--blanco);
+      background: var(--grad); color: #fff;
       border: none; border-radius: 999px;
-      font-size: 1rem; font-weight: 700; cursor: pointer;
-      transition: background .2s, transform .15s, box-shadow .2s;
-      box-shadow: 0 6px 20px rgba(27,79,255,.3);
+      font-size: .97rem; font-weight: 700; cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 0 24px rgba(139,92,246,.3);
+      transition: opacity .2s, transform .15s, box-shadow .2s;
     }
-    .btn-enviar:hover {
-      background: var(--azul-oscuro);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(27,79,255,.38);
-    }
+    .btn-enviar:hover { opacity: .88; transform: translateY(-2px); box-shadow: 0 0 38px rgba(139,92,246,.45); }
 
-    .form-mensaje {
+    .form-ok {
       display: none; margin-top: 1rem;
-      background: #e6fff9; color: #007a5e;
-      padding: .8rem 1rem; border-radius: var(--radio);
-      font-size: .9rem; font-weight: 600; text-align: center;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.3);
+      color: #34d399; padding: .8rem 1rem;
+      border-radius: var(--radio); font-size: .88rem; font-weight: 600; text-align: center;
     }
-    .form-mensaje.visible { display: block; }
+    .form-ok.visible { display: block; }
 
-    /* ── FOOTER ── */
+    /* ─── FOOTER ─── */
     footer {
-      background: var(--negro); color: #9aa3b5;
-      padding: 3rem 2rem 1.5rem;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      padding: 3.5rem 1.5rem 1.5rem;
     }
 
     .footer-inner {
-      max-width: 1100px; margin: 0 auto;
+      max-width: 1120px; margin: 0 auto;
       display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid rgba(255,255,255,.07);
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .footer-logo {
-      display: flex; align-items: center; gap: .6rem;
-      margin-bottom: 1rem;
-    }
-    .footer-logo svg { width: 32px; height: 32px; }
-    .footer-logo span { font-size: 1.2rem; font-weight: 700; color: var(--blanco); }
-    .footer-logo span em { color: var(--acento); font-style: normal; }
+    .footer-brand { display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+    .footer-brand span { font-size: 1.1rem; font-weight: 800; color: var(--txt); }
+    .footer-brand span em { color: var(--purple-hi); font-style: normal; }
 
-    .footer-desc { font-size: .88rem; line-height: 1.7; max-width: 280px; }
+    .footer-desc { font-size: .85rem; color: var(--txt-muted); line-height: 1.7; max-width: 260px; }
 
-    .footer-col h4 {
-      font-size: .9rem; font-weight: 700; color: var(--blanco);
-      margin-bottom: 1rem; letter-spacing: .3px;
-    }
+    .footer-col h4 { font-size: .78rem; font-weight: 700; color: var(--txt); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; }
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: .55rem; }
-    .footer-col ul li a {
-      color: #9aa3b5; text-decoration: none; font-size: .88rem;
-      transition: color .2s;
-    }
-    .footer-col ul li a:hover { color: var(--blanco); }
+    .footer-col ul li a { color: var(--txt-muted); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--txt); }
 
     .footer-bottom {
-      max-width: 1100px; margin: 1.5rem auto 0;
+      max-width: 1120px; margin: 1.5rem auto 0;
       display: flex; justify-content: space-between; align-items: center;
-      font-size: .82rem; flex-wrap: wrap; gap: .5rem;
+      font-size: .8rem; color: var(--txt-muted); flex-wrap: wrap; gap: .5rem;
     }
-    .footer-bottom a { color: var(--acento); text-decoration: none; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero-inner       { grid-template-columns: 1fr; gap: 3rem; }
-      .hero-visual      { display: none; }
-      .contacto-grid    { grid-template-columns: 1fr; gap: 2.5rem; }
-      .footer-inner     { grid-template-columns: 1fr 1fr; }
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .hero-inner     { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-terminal  { display: none; }
+      .contacto-grid  { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner   { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 640px) {
-      nav { padding: 1rem 1.2rem; }
+      nav { padding: .8rem 1.2rem; }
       .nav-links, .nav-cta { display: none; }
       .hamburger { display: flex; }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
       .form-row { grid-template-columns: 1fr; }
       .hero-botones { flex-direction: column; }
-      .btn-primario, .btn-secundario { text-align: center; }
+      .btn-grad, .btn-ghost { justify-content: center; }
+      section { padding: 4rem 1.2rem; }
     }
 
-    /* Mobile nav drawer */
+    /* mobile drawer */
     .mobile-menu {
-      display: none; position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--blanco); z-index: 200;
-      flex-direction: column; align-items: center; justify-content: center;
-      gap: 2rem;
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(8,8,16,.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-size: 1.4rem; font-weight: 700;
-      color: var(--negro); text-decoration: none;
-    }
-    .mobile-menu a:hover { color: var(--azul); }
-    .mobile-close {
-      position: absolute; top: 1.2rem; right: 1.4rem;
-      font-size: 2rem; cursor: pointer; color: var(--gris-texto);
-    }
+    .mobile-menu a { font-size: 1.5rem; font-weight: 700; color: var(--txt); text-decoration: none; }
+    .mobile-menu a:hover { color: var(--purple-hi); }
+    .mobile-close { position: absolute; top: 1.2rem; right: 1.5rem; font-size: 1.8rem; cursor: pointer; color: var(--txt-muted); }
+
+    /* scroll reveal base */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ─── NAV ─── -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
-    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="36" height="36" rx="9" fill="#1B4FFF"/>
-      <path d="M10 24 L18 12 L26 24" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="18" cy="12" r="2.8" fill="#00D4B4"/>
-    </svg>
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    </div>
     <span>Nuvika<em>SpA</em></span>
   </a>
 
@@ -483,12 +547,12 @@
 
   <a href="#contacto" class="nav-cta">Cotizar gratis</a>
 
-  <div class="hamburger" id="hamburger" aria-label="Menú">
+  <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- Mobile Menu -->
+<!-- mobile drawer -->
 <div class="mobile-menu" id="mobileMenu">
   <span class="mobile-close" id="mobileClose">✕</span>
   <a href="#servicios" class="mobile-link">Servicios</a>
@@ -496,168 +560,219 @@
   <a href="#contacto" class="nav-cta" style="margin-top:.5rem;">Cotizar gratis</a>
 </div>
 
-<!-- HERO -->
+<!-- ─── HERO ─── -->
 <section id="hero">
-  <div class="hero-blob blob-1"></div>
-  <div class="hero-blob blob-2"></div>
+  <div class="dot-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 
   <div class="hero-inner">
     <div class="hero-texto">
-      <div class="hero-badge">Tecnología para PYMEs chilenas</div>
+      <div class="hero-pill">
+        <div class="hero-pill-dot"></div>
+        Automatización con IA para PYMEs chilenas
+      </div>
+
       <h1 class="hero-titulo">
-        Soluciones <span>reales</span><br>para empresas<br>reales
+        Soluciones<br>
+        <span class="grad-text">reales</span> para<br>
+        empresas reales
       </h1>
+
       <p class="hero-tagline">
-        Ayudamos a tu empresa a crecer con tecnología a medida: automatización de procesos, soporte IT y digitalización sin complicaciones.
+        Llevamos la tecnología de las grandes empresas a tu PYME. Automatizamos, digitalizamos y optimizamos — sin jerga, sin complicaciones.
       </p>
+
       <div class="hero-botones">
-        <a href="#contacto" class="btn-primario">Habla con un experto</a>
-        <a href="#servicios" class="btn-secundario">Ver servicios</a>
+        <a href="#contacto" class="btn-grad">
+          Habla con un experto
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#servicios" class="btn-ghost">Ver servicios</a>
       </div>
     </div>
 
-    <div class="hero-visual">
-      <div class="hero-card">
-        <div class="hero-card-header">
-          <div class="hero-card-icon">
-            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <div>
-            <div class="hero-card-title">Automatización activa</div>
-            <div class="hero-card-sub">Nuvika Process Engine</div>
-          </div>
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <div class="t-dot t-red"></div>
+        <div class="t-dot t-amber"></div>
+        <div class="t-dot t-green"></div>
+        <span class="t-title">nuvika — process-engine</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line">
+          <span class="t-prompt">›</span>
+          <span class="t-cmd">nuvika analyze --empresa acme-spa</span>
         </div>
-
-        <div class="hero-stat">
-          <span class="stat-label">Flujos automatizados</span>
-          <div class="stat-bar"><div class="stat-fill" style="width:82%"></div></div>
+        <div class="t-line t-out t-info">⠿ Escaneando flujos operativos...</div>
+        <div class="t-line t-out">  Facturas manuales detectadas: <span class="t-success">247/mes</span></div>
+        <div class="t-line t-out">  Tiempo por tarea: <span style="color:#FEBC2E">38 min</span> → <span class="t-success">2 min</span></div>
+        <div class="t-line t-out">  Ahorro estimado: <span class="t-success">94 hrs/mes</span></div>
+        <div class="t-line" style="margin-top:.6rem">
+          <span class="t-prompt">›</span>
+          <span class="t-cmd">nuvika deploy --auto</span>
         </div>
-        <div class="hero-stat">
-          <span class="stat-label">Tiempo ahorrado</span>
-          <div class="stat-bar"><div class="stat-fill" style="width:68%"></div></div>
+        <div class="t-line t-out t-success">✓ Pipeline automatizado en producción</div>
+        <div class="t-line t-out t-success">✓ Integración ERP conectada</div>
+        <div class="t-line t-out t-success">✓ Monitoreo activo iniciado</div>
+        <div class="t-line" style="margin-top:.6rem">
+          <span class="t-prompt">›</span>
+          <span class="t-cursor"></span>
         </div>
-        <div class="hero-stat">
-          <span class="stat-label">Uptime infraestructura</span>
-          <div class="stat-bar"><div class="stat-fill" style="width:99%"></div></div>
+      </div>
+      <div class="terminal-kpis">
+        <div class="t-kpi">
+          <div class="t-kpi-num grad-text">+40</div>
+          <div class="t-kpi-lab">Empresas</div>
         </div>
-
-        <div class="hero-kpis">
-          <div class="kpi"><div class="kpi-num">+40</div><div class="kpi-lab">Empresas</div></div>
-          <div class="kpi"><div class="kpi-num">99%</div><div class="kpi-lab">Uptime</div></div>
-          <div class="kpi"><div class="kpi-num">3×</div><div class="kpi-lab">Productividad</div></div>
+        <div class="t-kpi">
+          <div class="t-kpi-num grad-text">99%</div>
+          <div class="t-kpi-lab">Uptime</div>
+        </div>
+        <div class="t-kpi">
+          <div class="t-kpi-num grad-text">3×</div>
+          <div class="t-kpi-lab">Productividad</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BAND -->
+<!-- ─── TRUST BAND ─── -->
 <div class="trust-band">
-  <p>Empresas que confían en nosotros</p>
-  <div class="trust-logos">
-    <span>Comercial Andina</span>
-    <span>Logística Norte</span>
-    <span>ContaRed</span>
-    <span>Retail Patagonia</span>
-    <span>ConstructInnova</span>
+  <div class="trust-inner">
+    <span class="trust-label">Empresas que confían en nosotros</span>
+    <div class="trust-divider"></div>
+    <div class="trust-logos">
+      <span>Comercial Andina</span>
+      <span>Logística Norte</span>
+      <span>ContaRed</span>
+      <span>Retail Patagonia</span>
+      <span>ConstructInnova</span>
+    </div>
   </div>
 </div>
 
-<!-- SERVICIOS -->
+<!-- ─── SERVICIOS ─── -->
 <section id="servicios">
   <div class="container">
-    <div class="section-badge">Servicios</div>
-    <h2 class="section-titulo">Todo lo que tu empresa necesita</h2>
-    <p class="section-subtitulo">Nos adaptamos al tamaño y ritmo de tu negocio. Sin contratos eternos ni letra chica.</p>
+    <div class="section-eyebrow">Servicios</div>
+    <h2 class="section-titulo">Todo lo que tu empresa<br><span class="grad-text">necesita para crecer</span></h2>
+    <p class="section-sub">Nos adaptamos al tamaño y ritmo de tu negocio. Sin contratos eternos ni letra chica.</p>
 
-    <div class="servicios-grid">
+    <div class="servicios-grid reveal">
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#E8EDFF;">⚙️</div>
+        <div class="servicio-num">01</div>
+        <div class="servicio-icon-wrap">⚙️</div>
         <h3 class="servicio-nombre">Automatización de procesos</h3>
         <p class="servicio-desc">Eliminamos tareas repetitivas: facturación, reportes, notificaciones y flujos internos. Tu equipo se enfoca en lo que importa.</p>
-        <span class="servicio-tag">RPA · Workflows · IA</span>
+        <div class="servicio-tags">
+          <span class="tag">RPA</span><span class="tag">Workflows</span><span class="tag">IA</span>
+        </div>
       </div>
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#E6FFF9;">🖥️</div>
+        <div class="servicio-num">02</div>
+        <div class="servicio-icon-wrap">🖥️</div>
         <h3 class="servicio-nombre">Soporte IT gestionado</h3>
         <p class="servicio-desc">Asistencia técnica remota y presencial, gestión de equipos, redes y seguridad informática. Disponible cuando lo necesitas.</p>
-        <span class="servicio-tag">Helpdesk · Redes · Seguridad</span>
+        <div class="servicio-tags">
+          <span class="tag">Helpdesk</span><span class="tag">Redes</span><span class="tag">Seguridad</span>
+        </div>
       </div>
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#FFF3E8;">📊</div>
+        <div class="servicio-num">03</div>
+        <div class="servicio-icon-wrap">📊</div>
         <h3 class="servicio-nombre">Business Intelligence</h3>
         <p class="servicio-desc">Dashboards en tiempo real para tomar decisiones con datos. Integración con tu ERP, CRM o planillas de Excel.</p>
-        <span class="servicio-tag">Power BI · SQL · Reporting</span>
+        <div class="servicio-tags">
+          <span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Reporting</span>
+        </div>
       </div>
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#F0E8FF;">☁️</div>
+        <div class="servicio-num">04</div>
+        <div class="servicio-icon-wrap">☁️</div>
         <h3 class="servicio-nombre">Migración a la nube</h3>
         <p class="servicio-desc">Llevamos tu infraestructura a AWS, Azure o Google Cloud de forma segura, con mínimo tiempo de inactividad.</p>
-        <span class="servicio-tag">AWS · Azure · GCP</span>
+        <div class="servicio-tags">
+          <span class="tag">AWS</span><span class="tag">Azure</span><span class="tag">GCP</span>
+        </div>
       </div>
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#FFE8EE;">🔒</div>
+        <div class="servicio-num">05</div>
+        <div class="servicio-icon-wrap">🔒</div>
         <h3 class="servicio-nombre">Ciberseguridad</h3>
         <p class="servicio-desc">Auditorías, copias de respaldo, gestión de accesos y protección ante ransomware. Protegemos lo que construiste.</p>
-        <span class="servicio-tag">Auditoría · Backup · IAM</span>
+        <div class="servicio-tags">
+          <span class="tag">Auditoría</span><span class="tag">Backup</span><span class="tag">IAM</span>
+        </div>
       </div>
 
       <div class="servicio-card">
-        <div class="servicio-icono" style="background:#E8F4FF;">🧩</div>
+        <div class="servicio-num">06</div>
+        <div class="servicio-icon-wrap">🧩</div>
         <h3 class="servicio-nombre">Desarrollo a medida</h3>
-        <p class="servicio-desc">Aplicaciones web, integraciones entre sistemas y portales internos diseñados para tu operación específica.</p>
-        <span class="servicio-tag">Web · APIs · Integraciones</span>
+        <p class="servicio-desc">Aplicaciones web, integraciones entre sistemas y portales internos diseñados exactamente para tu operación.</p>
+        <div class="servicio-tags">
+          <span class="tag">Web</span><span class="tag">APIs</span><span class="tag">Integraciones</span>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- CTA INTERMEDIO -->
+<!-- ─── CTA INTERMEDIO ─── -->
 <section id="cta-mid">
   <div class="container">
-    <div class="cta-intermedio">
+    <div class="cta-box reveal">
+      <div class="section-eyebrow" style="justify-content:center;">Sin costo ni compromiso</div>
       <h2>¿No sabes por dónde empezar?</h2>
-      <p>Cuéntanos tu desafío y te proponemos una solución concreta en 24 horas. Sin costo ni compromiso.</p>
-      <a href="#contacto" class="btn-blanco">Pedir diagnóstico gratuito</a>
+      <p>Cuéntanos tu desafío y te proponemos una solución concreta en 24 horas.</p>
+      <a href="#contacto" class="btn-grad" style="display:inline-flex;">
+        Pedir diagnóstico gratuito
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO -->
+<!-- ─── CONTACTO ─── -->
 <section id="contacto">
   <div class="container">
     <div class="contacto-grid">
 
-      <div class="contacto-info">
-        <div class="section-badge">Contacto</div>
-        <h2>Hablemos de tu proyecto</h2>
+      <div class="contacto-info reveal">
+        <div class="section-eyebrow">Contacto</div>
+        <h2 class="section-titulo">Hablemos de<br><span class="grad-text">tu proyecto</span></h2>
         <p>Completá el formulario y un especialista de Nuvika se comunicará contigo en menos de 24 horas hábiles.</p>
 
-        <div class="contacto-item">
-          <span>📧</span>
-          <span>contacto@nuvika.cl</span>
-        </div>
-        <div class="contacto-item">
-          <span>📞</span>
-          <span>+56 9 1234 5678</span>
-        </div>
-        <div class="contacto-item">
-          <span>📍</span>
-          <span>Santiago, Chile — atención remota en todo el país</span>
-        </div>
-        <div class="contacto-item">
-          <span>🕐</span>
-          <span>Lunes a viernes, 9:00 – 18:30 hrs</span>
+        <div class="contacto-items">
+          <div class="contacto-item">
+            <div class="ci-icon">📧</div>
+            <span>contacto@nuvika.cl</span>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">📞</div>
+            <span>+56 9 1234 5678</span>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">📍</div>
+            <span>Santiago, Chile — atención remota en todo el país</span>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">🕐</div>
+            <span>Lunes a viernes, 9:00 – 18:30 hrs</span>
+          </div>
         </div>
       </div>
 
-      <div class="form-contacto">
+      <div class="form-wrap reveal">
         <form id="formContacto" novalidate>
           <div class="form-row">
             <div class="form-group">
@@ -690,12 +805,12 @@
           </div>
 
           <div class="form-group">
-            <label for="mensaje">Cuéntanos tu desafío</label>
-            <textarea id="mensaje" name="mensaje" placeholder="Describe brevemente qué problema o proceso quieres mejorar..."></textarea>
+            <label for="mensaje">Tu desafío</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Describe brevemente qué proceso quieres mejorar..."></textarea>
           </div>
 
           <button type="submit" class="btn-enviar">Enviar mensaje →</button>
-          <div class="form-mensaje" id="formMensaje">✅ ¡Mensaje enviado! Te respondemos en 24 horas hábiles.</div>
+          <div class="form-ok" id="formOk">✓ ¡Mensaje enviado! Te respondemos en 24 horas hábiles.</div>
         </form>
       </div>
 
@@ -703,19 +818,17 @@
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ─── FOOTER ─── -->
 <footer>
   <div class="footer-inner">
     <div>
-      <div class="footer-logo">
-        <svg viewBox="0 0 36 36" fill="none">
-          <rect width="36" height="36" rx="9" fill="#1B4FFF"/>
-          <path d="M10 24 L18 12 L26 24" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="18" cy="12" r="2.8" fill="#00D4B4"/>
-        </svg>
+      <div class="footer-brand">
+        <div class="logo-mark" style="width:30px;height:30px;border-radius:7px;">
+          <svg viewBox="0 0 24 24" style="width:15px;height:15px;" fill="white"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
         <span>Nuvika<em>SpA</em></span>
       </div>
-      <p class="footer-desc">Soluciones IT y automatización para PYMEs chilenas. Tecnología real, resultados reales.</p>
+      <p class="footer-desc">Soluciones IT y automatización con IA para PYMEs chilenas. Tecnología real, resultados reales.</p>
     </div>
 
     <div class="footer-col">
@@ -746,30 +859,76 @@
 </footer>
 
 <script>
-  // Nav sombra al hacer scroll
+  /* ── canvas de partículas ── */
+  (function () {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COLORS = ['139,92,246', '6,182,212', '236,72,153'];
+
+    for (let i = 0; i < 70; i++) {
+      particles.push({
+        x: Math.random() * 1920,
+        y: Math.random() * 1080,
+        r: Math.random() * 1.5 + .3,
+        vx: (Math.random() - .5) * .25,
+        vy: (Math.random() - .5) * .25,
+        c: COLORS[Math.floor(Math.random() * COLORS.length)],
+        a: Math.random() * .5 + .1,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.c},${p.a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  /* ── nav sombra ── */
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 30);
   });
 
-  // Menú móvil
-  const hamburger    = document.getElementById('hamburger');
-  const mobileMenu   = document.getElementById('mobileMenu');
-  const mobileClose  = document.getElementById('mobileClose');
+  /* ── menú móvil ── */
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('mobileMenu').classList.add('open'));
+  document.getElementById('mobileClose').addEventListener('click', () =>
+    document.getElementById('mobileMenu').classList.remove('open'));
+  document.querySelectorAll('.mobile-link, .mobile-menu .nav-cta').forEach(el =>
+    el.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open')));
 
-  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
-  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
-
-  document.querySelectorAll('.mobile-link, .mobile-menu .nav-cta').forEach(el => {
-    el.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  /* ── efecto spotlight en cards ── */
+  document.querySelectorAll('.servicio-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+    });
   });
 
-  // Formulario — feedback visual (sin backend)
-  document.getElementById('formContacto').addEventListener('submit', function(e) {
+  /* ── formulario ── */
+  document.getElementById('formContacto').addEventListener('submit', function (e) {
     e.preventDefault();
-    const nombre = document.getElementById('nombre').value.trim();
-    const email  = document.getElementById('email').value.trim();
-    if (!nombre || !email) {
+    if (!document.getElementById('nombre').value.trim() || !document.getElementById('email').value.trim()) {
       alert('Por favor completa tu nombre y correo electrónico.');
       return;
     }
@@ -777,33 +936,22 @@
     btn.textContent = 'Enviando…';
     btn.disabled = true;
     setTimeout(() => {
-      document.getElementById('formMensaje').classList.add('visible');
+      document.getElementById('formOk').classList.add('visible');
       btn.textContent = '¡Enviado!';
       this.reset();
       setTimeout(() => {
-        document.getElementById('formMensaje').classList.remove('visible');
+        document.getElementById('formOk').classList.remove('visible');
         btn.textContent = 'Enviar mensaje →';
         btn.disabled = false;
       }, 5000);
-    }, 1000);
+    }, 900);
   });
 
-  // Animación de entrada al hacer scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.12 });
-
-  document.querySelectorAll('.servicio-card, .cta-intermedio, .contacto-info, .form-contacto').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity .5s ease, transform .5s ease';
-    observer.observe(el);
-  });
+  /* ── scroll reveal ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
