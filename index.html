@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="claro">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,43 +10,99 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    /* ── RESET & BASE ── */
+    /* ════════════════════════════════════════
+       TOKENS POR TEMA
+    ════════════════════════════════════════ */
+
+    [data-theme="claro"] {
+      --bg:        #ffffff;
+      --bg-alt:    #f5f5f7;
+      --surface:   #ffffff;
+      --borde:     #e5e7eb;
+      --borde-hi:  rgba(79,110,247,.4);
+      --txt:       #111118;
+      --txt-muted: #6b7280;
+      --nav-bg:    rgba(255,255,255,.9);
+      --nav-borde: #e5e7eb;
+      --card-bg:   #f9f9fc;
+      --card-hvr:  #f0f1ff;
+      --drawer-bg: #ffffff;
+      --acento:    #4f6ef7;
+      --acento2:   #7c3aed;
+      --hero-grid: rgba(79,110,247,.05);
+      --hero-glow: rgba(79,110,247,.07);
+      --bar-track: #e9eaf2;
+      --panel-bg:  #f5f5f7;
+    }
+
+    [data-theme="oscuro"] {
+      --bg:        #0f0f1a;
+      --bg-alt:    #1a1a2e;
+      --surface:   #1a1a2e;
+      --borde:     rgba(255,255,255,.08);
+      --borde-hi:  rgba(79,110,247,.45);
+      --txt:       #f0f0f8;
+      --txt-muted: #9898b8;
+      --nav-bg:    rgba(15,15,26,.88);
+      --nav-borde: rgba(255,255,255,.08);
+      --card-bg:   #1a1a2e;
+      --card-hvr:  rgba(79,110,247,.07);
+      --drawer-bg: #1a1a2e;
+      --acento:    #4f6ef7;
+      --acento2:   #7c3aed;
+      --hero-grid: rgba(79,110,247,.04);
+      --hero-glow: rgba(79,110,247,.13);
+      --bar-track: rgba(255,255,255,.07);
+      --panel-bg:  rgba(255,255,255,.03);
+    }
+
+    [data-theme="ia"] {
+      --bg:        #06040f;
+      --bg-alt:    #0d0720;
+      --surface:   #0d0720;
+      --borde:     rgba(168,85,247,.15);
+      --borde-hi:  rgba(168,85,247,.55);
+      --txt:       #ede8ff;
+      --txt-muted: #9d8ec4;
+      --nav-bg:    rgba(6,4,15,.9);
+      --nav-borde: rgba(168,85,247,.15);
+      --card-bg:   #0d0720;
+      --card-hvr:  rgba(139,92,246,.08);
+      --drawer-bg: #0d0720;
+      --acento:    #a855f7;
+      --acento2:   #06b6d4;
+      --hero-grid: rgba(168,85,247,.05);
+      --hero-glow: rgba(168,85,247,.16);
+      --bar-track: rgba(168,85,247,.1);
+      --panel-bg:  rgba(168,85,247,.05);
+    }
+
+    /* ════════════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --negro:    #0f0f1a;
-      --oscuro:   #1a1a2e;
-      --medio:    #2d2d4e;
-      --acento:   #4f6ef7;
-      --acento2:  #7c3aed;
-      --txt:      #f0f0f8;
-      --txt-muted:#9898b8;
-      --blanco:   #ffffff;
-      --borde:    rgba(255,255,255,.08);
-      --radio:    12px;
-      --max:      1080px;
-    }
+    :root { --radio: 12px; --max: 1080px; }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Sora', system-ui, sans-serif;
-      background: var(--negro);
+      background: var(--bg);
       color: var(--txt);
       line-height: 1.65;
       font-size: 16px;
+      transition: background .3s, color .3s;
     }
 
     img { display: block; max-width: 100%; }
     a   { color: inherit; text-decoration: none; }
 
-    .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
 
-    /* ── TIPOGRAFÍA ── */
+    /* ════════════════════════════════════════
+       TIPOGRAFÍA
+    ════════════════════════════════════════ */
     h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -1px; }
     h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: -.5px; }
     h3 { font-size: 1.05rem; font-weight: 700; }
@@ -58,247 +114,220 @@
       background-clip: text;
     }
 
-    /* ── BOTONES ── */
+    /* ════════════════════════════════════════
+       BOTONES
+    ════════════════════════════════════════ */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .8rem 2rem;
-      border-radius: 999px;
-      font-family: inherit;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .8rem 2rem; border-radius: 999px;
+      font-family: inherit; font-size: .95rem; font-weight: 700;
+      cursor: pointer; border: none; text-decoration: none;
       transition: transform .2s, box-shadow .2s, opacity .2s;
-      text-decoration: none;
-      border: none;
     }
     .btn:hover { transform: translateY(-2px); }
 
     .btn-primario {
       background: linear-gradient(135deg, var(--acento), var(--acento2));
-      color: var(--blanco);
-      box-shadow: 0 4px 24px rgba(79,110,247,.35);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(79,110,247,.28);
     }
-    .btn-primario:hover { box-shadow: 0 8px 32px rgba(79,110,247,.5); }
+    .btn-primario:hover { opacity: .9; box-shadow: 0 8px 28px rgba(79,110,247,.42); }
 
     .btn-secundario {
-      background: transparent;
-      color: var(--txt);
+      background: transparent; color: var(--txt);
       border: 1.5px solid var(--borde);
     }
-    .btn-secundario:hover { border-color: rgba(79,110,247,.5); background: rgba(79,110,247,.06); }
+    .btn-secundario:hover { border-color: var(--borde-hi); background: var(--card-hvr); }
 
-    /* ── ETIQUETA DE SECCIÓN ── */
+    /* ════════════════════════════════════════
+       EYEBROW
+    ════════════════════════════════════════ */
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--acento);
-      margin-bottom: .9rem;
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--acento); margin-bottom: .9rem;
     }
     .eyebrow::before {
-      content: '';
-      display: block;
-      width: 18px; height: 2px;
-      background: var(--acento);
-      border-radius: 2px;
+      content: ''; display: block;
+      width: 18px; height: 2px; background: var(--acento); border-radius: 2px;
     }
 
-    /* ── NAV ── */
+    /* ════════════════════════════════════════
+       SELECTOR DE TEMA
+    ════════════════════════════════════════ */
+    .theme-switcher {
+      display: flex; align-items: center; gap: .25rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      padding: .22rem .32rem;
+      transition: background .3s, border-color .3s;
+    }
+
+    .theme-btn {
+      position: relative;
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: border-color .2s, transform .15s;
+      flex-shrink: 0;
+    }
+    .theme-btn:hover { transform: scale(1.18); }
+    .theme-btn.active { border-color: var(--acento); }
+
+    /* swatch de color */
+    .theme-btn::after {
+      content: ''; position: absolute; inset: 2px; border-radius: 50%;
+    }
+    .theme-btn[data-t="claro"]::after  { background: #f5f5f7; border: 1.5px solid #d1d5db; }
+    .theme-btn[data-t="oscuro"]::after { background: linear-gradient(135deg,#1a1a2e,#2d2d4e); }
+    .theme-btn[data-t="ia"]::after     { background: conic-gradient(from 0deg, #a855f7, #06b6d4, #a855f7); }
+
+    /* tooltip */
+    .theme-btn:hover::before {
+      content: attr(data-label);
+      position: absolute; bottom: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+      background: var(--txt); color: var(--bg);
+      font-size: .62rem; font-weight: 700;
+      padding: .18rem .5rem; border-radius: 4px;
+      white-space: nowrap; pointer-events: none;
+      font-family: 'Sora', sans-serif; z-index: 20;
+    }
+
+    /* ════════════════════════════════════════
+       NAV
+    ════════════════════════════════════════ */
     #nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 90;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(15,15,26,.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--borde);
-      transition: border-color .3s;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+      padding: .85rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--nav-borde);
+      transition: background .3s, border-color .3s;
     }
-    #nav.solid { border-bottom-color: rgba(79,110,247,.18); }
+    #nav.solid { border-bottom-color: var(--borde-hi); }
 
-    .nav-logo {
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: -.3px;
-    }
+    .nav-left  { display: flex; align-items: center; gap: 2rem; }
+    .nav-right { display: flex; align-items: center; gap: .8rem; }
+
+    .nav-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -.3px; }
     .nav-logo span { color: var(--acento); }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
     .nav-links a {
-      font-size: .88rem;
-      font-weight: 500;
-      color: var(--txt-muted);
-      transition: color .2s;
+      font-size: .88rem; font-weight: 500;
+      color: var(--txt-muted); transition: color .2s;
     }
     .nav-links a:hover { color: var(--txt); }
 
     .nav-cta { padding: .5rem 1.3rem; font-size: .85rem; }
 
     .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: .3rem;
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: .3rem;
     }
     .hamburger span {
-      display: block;
-      width: 22px; height: 2px;
-      background: var(--txt);
-      border-radius: 2px;
-      transition: .3s;
+      display: block; width: 22px; height: 2px;
+      background: var(--txt); border-radius: 2px; transition: background .3s;
     }
 
     /* mobile drawer */
     #mobile-drawer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 95;
-      background: var(--oscuro);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
+      display: none; position: fixed; inset: 0; z-index: 95;
+      background: var(--drawer-bg);
+      flex-direction: column; align-items: center; justify-content: center; gap: 1.8rem;
+      transition: background .3s;
     }
     #mobile-drawer.open { display: flex; }
-    #mobile-drawer a {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
+    #mobile-drawer a { font-size: 1.4rem; font-weight: 700; transition: color .2s; }
     #mobile-drawer a:hover { color: var(--acento); }
     .drawer-close {
-      position: absolute;
-      top: 1.2rem; right: 1.5rem;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: var(--txt-muted);
+      position: absolute; top: 1.2rem; right: 1.5rem;
+      font-size: 1.8rem; cursor: pointer; color: var(--txt-muted);
     }
+    /* selector de tema dentro del drawer */
+    .drawer-theme-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      margin-top: .4rem;
+    }
+    .drawer-theme-label { font-size: .72rem; color: var(--txt-muted); text-transform: uppercase; letter-spacing: 1.5px; }
+    .drawer-theme { display: flex; gap: .5rem; }
 
-    /* ── HERO ── */
+    /* ════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════ */
     #hero {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       padding: 9rem 1.5rem 5rem;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-
-    /* cuadrícula sutil */
     #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(79,110,247,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(79,110,247,.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
+        linear-gradient(var(--hero-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
+      background-size: 48px 48px; pointer-events: none;
     }
-
-    /* resplandor central */
     #hero::after {
-      content: '';
-      position: absolute;
-      width: 700px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(79,110,247,.12) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      content: ''; position: absolute;
+      width: 700px; height: 500px; border-radius: 50%;
+      background: radial-gradient(ellipse, var(--hero-glow) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
       pointer-events: none;
     }
 
     .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: var(--max);
-      margin: 0 auto;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 1.5rem;
+      position: relative; z-index: 1;
+      max-width: var(--max); margin: 0 auto; width: 100%;
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem;
     }
 
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .35rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(79,110,247,.3);
-      background: rgba(79,110,247,.08);
-      font-size: .75rem;
-      font-weight: 600;
-      color: #a5b4fc;
-      letter-spacing: .5px;
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .35rem 1rem; border-radius: 999px;
+      border: 1px solid rgba(79,110,247,.25);
+      background: rgba(79,110,247,.06);
+      font-size: .75rem; font-weight: 600; color: var(--acento); letter-spacing: .5px;
     }
     .badge-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 8px #4ade80;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 8px #22c55e;
     }
 
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem);
-      color: var(--txt-muted);
-      max-width: 540px;
-      line-height: 1.8;
+      color: var(--txt-muted); max-width: 540px; line-height: 1.8;
     }
 
     .hero-btns {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: .5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      justify-content: center; margin-top: .5rem;
     }
 
     .hero-social {
       margin-top: 2.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      font-size: .78rem;
-      color: var(--txt-muted);
-      flex-wrap: wrap;
-      justify-content: center;
+      display: flex; align-items: center; gap: 1.5rem;
+      font-size: .78rem; color: var(--txt-muted);
+      flex-wrap: wrap; justify-content: center;
     }
     .hero-social strong { color: var(--txt); }
 
-    /* ── PROBLEMA ── */
+    /* ════════════════════════════════════════
+       PROBLEMA
+    ════════════════════════════════════════ */
     #problema {
       padding: 6rem 1.5rem;
-      background: var(--oscuro);
+      background: var(--bg-alt);
       border-top: 1px solid var(--borde);
       border-bottom: 1px solid var(--borde);
     }
 
-    .problema-header {
-      text-align: center;
-      margin-bottom: 3.5rem;
-    }
-    .problema-header p {
-      color: var(--txt-muted);
-      max-width: 480px;
-      margin: .8rem auto 0;
-    }
+    .problema-header { text-align: center; margin-bottom: 3.5rem; }
+    .problema-header p { color: var(--txt-muted); max-width: 480px; margin: .8rem auto 0; }
 
     .problema-grid {
       display: grid;
@@ -307,46 +336,22 @@
     }
 
     .problema-card {
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--borde);
-      border-radius: var(--radio);
-      padding: 2rem;
-      transition: border-color .25s, transform .25s;
+      background: var(--surface);
+      border: 1px solid var(--borde); border-radius: var(--radio); padding: 2rem;
+      transition: border-color .25s, transform .25s, background .3s;
     }
-    .problema-card:hover {
-      border-color: rgba(79,110,247,.3);
-      transform: translateY(-3px);
-    }
+    .problema-card:hover { border-color: var(--borde-hi); transform: translateY(-3px); }
+    .problema-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .problema-card h3 { margin-bottom: .5rem; font-size: 1rem; }
+    .problema-card p  { font-size: .88rem; color: var(--txt-muted); line-height: 1.7; }
 
-    .problema-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+    /* ════════════════════════════════════════
+       SERVICIOS
+    ════════════════════════════════════════ */
+    #servicios { padding: 6rem 1.5rem; }
 
-    .problema-card h3 {
-      margin-bottom: .5rem;
-      font-size: 1rem;
-    }
-
-    .problema-card p {
-      font-size: .88rem;
-      color: var(--txt-muted);
-      line-height: 1.7;
-    }
-
-    /* ── SERVICIOS ── */
-    #servicios {
-      padding: 6rem 1.5rem;
-    }
-
-    .servicios-header {
-      margin-bottom: 3rem;
-    }
-    .servicios-header p {
-      color: var(--txt-muted);
-      margin-top: .8rem;
-      max-width: 480px;
-    }
+    .servicios-header { margin-bottom: 3rem; }
+    .servicios-header p { color: var(--txt-muted); margin-top: .8rem; max-width: 480px; }
 
     .servicios-grid {
       display: grid;
@@ -355,333 +360,184 @@
     }
 
     .servicio-card {
-      background: var(--oscuro);
-      border: 1px solid var(--borde);
-      border-radius: var(--radio);
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: .6rem;
-      transition: border-color .25s, box-shadow .25s, transform .25s;
-      position: relative;
-      overflow: hidden;
+      background: var(--card-bg);
+      border: 1px solid var(--borde); border-radius: var(--radio); padding: 2rem;
+      display: flex; flex-direction: column; gap: .6rem;
+      position: relative; overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .25s, background .3s;
     }
     .servicio-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, var(--acento), var(--acento2));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .3s;
+      transform: scaleX(0); transform-origin: left; transition: transform .3s;
     }
     .servicio-card:hover {
-      border-color: rgba(79,110,247,.25);
+      border-color: var(--borde-hi);
       box-shadow: 0 8px 32px rgba(79,110,247,.1);
       transform: translateY(-4px);
+      background: var(--card-hvr);
     }
     .servicio-card:hover::after { transform: scaleX(1); }
 
-    .servicio-emoji {
-      font-size: 2rem;
-      margin-bottom: .4rem;
-    }
-
+    .servicio-emoji { font-size: 2rem; margin-bottom: .4rem; }
     .servicio-card h3 { font-size: 1.05rem; }
+    .servicio-card p  { font-size: .88rem; color: var(--txt-muted); line-height: 1.7; }
 
-    .servicio-card p {
-      font-size: .88rem;
-      color: var(--txt-muted);
-      line-height: 1.7;
-    }
-
-    .servicio-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .4rem;
-      margin-top: .5rem;
-    }
+    .servicio-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
     .stag {
-      font-size: .67rem;
-      font-weight: 600;
-      padding: .2rem .6rem;
-      border-radius: 999px;
-      border: 1px solid var(--borde);
-      color: var(--txt-muted);
-      letter-spacing: .3px;
+      font-size: .67rem; font-weight: 600;
+      padding: .2rem .6rem; border-radius: 999px;
+      border: 1px solid var(--borde); color: var(--txt-muted); letter-spacing: .3px;
     }
 
-    /* ── POR QUÉ NUVIKA ── */
+    /* ════════════════════════════════════════
+       POR QUÉ NUVIKA
+    ════════════════════════════════════════ */
     #porque {
       padding: 6rem 1.5rem;
-      background: var(--oscuro);
+      background: var(--bg-alt);
       border-top: 1px solid var(--borde);
       border-bottom: 1px solid var(--borde);
     }
 
     .porque-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
     }
 
     .porque-texto h2 { margin-bottom: 1rem; }
-    .porque-texto > p {
-      color: var(--txt-muted);
-      margin-bottom: 2rem;
-    }
+    .porque-texto > p { color: var(--txt-muted); margin-bottom: 2rem; }
 
-    .porque-items {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .porque-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-    }
+    .porque-items { display: flex; flex-direction: column; gap: 1.2rem; }
+    .porque-item  { display: flex; align-items: flex-start; gap: 1rem; }
 
     .porque-bullet {
-      width: 36px; height: 36px;
-      border-radius: 9px;
-      background: rgba(79,110,247,.12);
-      border: 1px solid rgba(79,110,247,.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-      margin-top: .1rem;
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(79,110,247,.1);
+      border: 1px solid rgba(79,110,247,.22);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0; margin-top: .1rem;
     }
+    .porque-item-txt h3 { font-size: .95rem; margin-bottom: .2rem; }
+    .porque-item-txt p  { font-size: .85rem; color: var(--txt-muted); line-height: 1.65; }
 
-    .porque-item-txt h3 {
-      font-size: .95rem;
-      margin-bottom: .2rem;
-    }
-    .porque-item-txt p {
-      font-size: .85rem;
-      color: var(--txt-muted);
-      line-height: 1.65;
-    }
-
-    /* panel derecho */
     .porque-panel {
-      background: rgba(255,255,255,.03);
+      background: var(--panel-bg);
       border: 1px solid var(--borde);
-      border-radius: 18px;
-      padding: 2.5rem;
+      border-radius: 18px; padding: 2.5rem;
+      transition: background .3s, border-color .3s;
     }
 
     .panel-titulo {
-      font-size: .8rem;
-      font-weight: 700;
-      color: var(--txt-muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 1.5rem;
+      font-size: .8rem; font-weight: 700; color: var(--txt-muted);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem;
     }
 
-    .panel-stats {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
-
-    .pstat {
-      display: flex;
-      flex-direction: column;
-      gap: .3rem;
-    }
-    .pstat-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: .8rem;
-    }
+    .panel-stats { display: flex; flex-direction: column; gap: 1.4rem; }
+    .pstat { display: flex; flex-direction: column; gap: .3rem; }
+    .pstat-header { display: flex; justify-content: space-between; font-size: .8rem; }
     .pstat-label { color: var(--txt-muted); }
     .pstat-val   { color: var(--txt); font-weight: 700; }
-    .pstat-bar {
-      height: 6px;
-      background: rgba(255,255,255,.06);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .pstat-fill {
-      height: 100%;
-      border-radius: 3px;
+    .pstat-bar   { height: 6px; background: var(--bar-track); border-radius: 3px; overflow: hidden; }
+    .pstat-fill  {
+      height: 100%; border-radius: 3px;
       background: linear-gradient(90deg, var(--acento), var(--acento2));
       transition: width 1.2s ease;
     }
 
     .panel-nums {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.8rem;
-      padding-top: 1.5rem;
+      display: flex; gap: 1rem; margin-top: 1.8rem; padding-top: 1.5rem;
       border-top: 1px solid var(--borde);
     }
-    .pnum {
-      flex: 1;
-      text-align: center;
-    }
+    .pnum { flex: 1; text-align: center; }
     .pnum-n {
-      font-size: 1.6rem;
-      font-weight: 800;
+      font-size: 1.6rem; font-weight: 800;
       background: linear-gradient(90deg, var(--acento), var(--acento2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .pnum-l {
-      font-size: .7rem;
-      color: var(--txt-muted);
-      margin-top: .1rem;
-    }
+    .pnum-l { font-size: .7rem; color: var(--txt-muted); margin-top: .1rem; }
 
-    /* ── CTA FINAL ── */
-    #cta {
-      padding: 7rem 1.5rem;
-    }
+    /* ════════════════════════════════════════
+       CTA FINAL
+    ════════════════════════════════════════ */
+    #cta { padding: 7rem 1.5rem; }
 
     .cta-box {
-      max-width: 680px;
-      margin: 0 auto;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.2rem;
+      max-width: 680px; margin: 0 auto; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
     }
-
     .cta-box h2 { line-height: 1.15; }
-
-    .cta-box p {
-      color: var(--txt-muted);
-      font-size: 1.05rem;
-      max-width: 460px;
-    }
+    .cta-box p  { color: var(--txt-muted); font-size: 1.05rem; max-width: 460px; }
 
     .cta-btns {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: .5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      justify-content: center; margin-top: .5rem;
     }
+    .cta-nota { font-size: .78rem; color: var(--txt-muted); }
 
-    .cta-nota {
-      font-size: .78rem;
-      color: var(--txt-muted);
-    }
-
-    /* ── FOOTER ── */
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
     footer {
-      background: var(--oscuro);
+      background: var(--bg-alt);
       border-top: 1px solid var(--borde);
       padding: 2.5rem 1.5rem;
     }
 
     .footer-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.2rem;
+      max-width: var(--max); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.2rem;
     }
 
-    .footer-marca {
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-    }
-    .footer-logo {
-      font-size: 1.1rem;
-      font-weight: 800;
-    }
+    .footer-marca { display: flex; flex-direction: column; gap: .25rem; }
+    .footer-logo  { font-size: 1.1rem; font-weight: 800; }
     .footer-logo span { color: var(--acento); }
-    .footer-meta {
-      font-size: .75rem;
-      color: var(--txt-muted);
-      line-height: 1.6;
-    }
+    .footer-meta { font-size: .75rem; color: var(--txt-muted); line-height: 1.6; }
 
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .footer-links a {
-      font-size: .82rem;
-      color: var(--txt-muted);
-      transition: color .2s;
-    }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { font-size: .82rem; color: var(--txt-muted); transition: color .2s; }
     .footer-links a:hover { color: var(--txt); }
 
-    .footer-copy {
-      font-size: .75rem;
-      color: var(--txt-muted);
-      text-align: right;
-    }
+    .footer-copy { font-size: .75rem; color: var(--txt-muted); text-align: right; }
 
-    /* ── WHATSAPP FLOTANTE ── */
+    /* ════════════════════════════════════════
+       WHATSAPP FLOTANTE
+    ════════════════════════════════════════ */
     #wa-btn {
-      position: fixed;
-      bottom: 1.8rem;
-      right: 1.8rem;
-      z-index: 80;
-      width: 54px; height: 54px;
-      border-radius: 50%;
+      position: fixed; bottom: 1.8rem; right: 1.8rem; z-index: 80;
+      width: 54px; height: 54px; border-radius: 50%;
       background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 20px rgba(37,211,102,.4);
       transition: transform .2s, box-shadow .2s;
       text-decoration: none;
     }
-    #wa-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 28px rgba(37,211,102,.6);
-    }
-    #wa-btn svg {
-      width: 28px; height: 28px;
-      fill: #fff;
-    }
+    #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.6); }
+    #wa-btn svg { width: 28px; height: 28px; fill: #fff; }
 
-    /* tooltip */
     #wa-btn::before {
       content: 'Escríbenos';
-      position: absolute;
-      right: calc(100% + .7rem);
-      background: var(--oscuro);
-      border: 1px solid var(--borde);
-      color: var(--txt);
-      font-size: .75rem;
-      font-weight: 600;
-      padding: .35rem .7rem;
-      border-radius: 6px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s;
-      font-family: 'Sora', sans-serif;
+      position: absolute; right: calc(100% + .7rem);
+      background: var(--txt); color: var(--bg);
+      font-size: .75rem; font-weight: 600;
+      padding: .35rem .7rem; border-radius: 6px;
+      white-space: nowrap; opacity: 0; pointer-events: none;
+      transition: opacity .2s; font-family: 'Sora', sans-serif;
     }
     #wa-btn:hover::before { opacity: 1; }
 
-    /* ── RESPONSIVE ── */
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
     @media (max-width: 860px) {
       .porque-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     }
 
     @media (max-width: 640px) {
       #nav .nav-links,
-      #nav .nav-cta  { display: none; }
-      .hamburger     { display: flex; }
+      #nav .nav-cta { display: none; }
+      .hamburger    { display: flex; }
 
       .hero-btns { flex-direction: column; align-items: center; }
       .btn { justify-content: center; width: 100%; max-width: 280px; }
@@ -693,34 +549,36 @@
       #wa-btn::before { display: none; }
     }
 
-    /* ── SCROLL REVEAL ── */
-    .sr {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity .55s ease, transform .55s ease;
-    }
-    .sr.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* ════════════════════════════════════════
+       SCROLL REVEAL
+    ════════════════════════════════════════ */
+    .sr { opacity: 0; transform: translateY(22px); transition: opacity .55s ease, transform .55s ease; }
+    .sr.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-<!-- ─────────────── NAV ─────────────── -->
+<!-- ═══════════════ NAV ═══════════════ -->
 <nav id="nav">
-  <a href="#hero" class="nav-logo">Nuvika<span>SpA</span></a>
+  <div class="nav-left">
+    <a href="#hero" class="nav-logo">Nuvika<span>SpA</span></a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#porque">Nosotros</a></li>
+      <li><a href="#cta">Contacto</a></li>
+    </ul>
+  </div>
 
-  <ul class="nav-links">
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#porque">Nosotros</a></li>
-    <li><a href="#cta">Contacto</a></li>
-  </ul>
-
-  <a href="mailto:hola@nuvika.cl" class="btn btn-primario nav-cta">Conversemos</a>
-
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
+  <div class="nav-right">
+    <div class="theme-switcher" role="group" aria-label="Cambiar tema">
+      <button class="theme-btn active" data-t="claro"  data-label="Claro"></button>
+      <button class="theme-btn"        data-t="oscuro" data-label="Oscuro"></button>
+      <button class="theme-btn"        data-t="ia"     data-label="IA"></button>
+    </div>
+    <a href="mailto:hola@nuvika.cl" class="btn btn-primario nav-cta">Conversemos</a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
 
@@ -730,10 +588,18 @@
   <a href="#servicios" class="drawer-link">Servicios</a>
   <a href="#porque"    class="drawer-link">Nosotros</a>
   <a href="#cta"       class="drawer-link">Contacto</a>
-  <a href="mailto:hola@nuvika.cl" class="btn btn-primario" style="margin-top:.5rem;">Conversemos</a>
+  <a href="mailto:hola@nuvika.cl" class="btn btn-primario" style="margin-top:.3rem;">Conversemos</a>
+  <div class="drawer-theme-wrap">
+    <span class="drawer-theme-label">Tema</span>
+    <div class="drawer-theme">
+      <button class="theme-btn" data-t="claro"  data-label="Claro"></button>
+      <button class="theme-btn" data-t="oscuro" data-label="Oscuro"></button>
+      <button class="theme-btn" data-t="ia"     data-label="IA"></button>
+    </div>
+  </div>
 </div>
 
-<!-- ─────────────── HERO ─────────────── -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section id="hero">
   <div class="hero-inner">
 
@@ -762,7 +628,7 @@
     </div>
 
     <div class="hero-social">
-      <span>+40 empresas confían en nosotros</span>
+      <span>Soluciones confiables para empresas en crecimiento</span>
       <span>·</span>
       <span>Respuesta en <strong>&lt; 24 hrs</strong></span>
       <span>·</span>
@@ -772,7 +638,7 @@
   </div>
 </section>
 
-<!-- ─────────────── PROBLEMA ─────────────── -->
+<!-- ═══════════════ PROBLEMA ═══════════════ -->
 <section id="problema">
   <div class="wrap">
     <div class="problema-header sr">
@@ -782,30 +648,26 @@
     </div>
 
     <div class="problema-grid">
-
       <div class="problema-card sr">
         <div class="problema-icon">⏳</div>
         <h3>Procesos 100% manuales</h3>
         <p>Tu equipo pierde horas en tareas repetitivas: ingresar datos, generar reportes, enviar correos. Tiempo que podría ir al negocio.</p>
       </div>
-
       <div class="problema-card sr">
         <div class="problema-icon">🌫️</div>
         <h3>Sin visibilidad real del negocio</h3>
         <p>Tus datos están dispersos en planillas, correos y sistemas que no se hablan. Tomar decisiones se vuelve adivinar.</p>
       </div>
-
       <div class="problema-card sr">
         <div class="problema-icon">🔧</div>
         <h3>Tecnología que no escala</h3>
         <p>Tienes software que no se integra, proveedores que no responden y soluciones que funcionan para empresas grandes, no para la tuya.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─────────────── SERVICIOS ─────────────── -->
+<!-- ═══════════════ SERVICIOS ═══════════════ -->
 <section id="servicios">
   <div class="wrap">
     <div class="servicios-header sr">
@@ -815,68 +677,53 @@
     </div>
 
     <div class="servicios-grid">
-
       <div class="servicio-card sr">
         <div class="servicio-emoji">⚙️</div>
         <h3>Automatización de procesos</h3>
-        <p>Eliminamos el trabajo manual repetitivo: facturación, reportes, notificaciones, flujos de aprobación y más.</p>
+        <p>Eliminamos el trabajo manual repetitivo: facturación, reportes, notificaciones y flujos de aprobación.</p>
         <div class="servicio-tags">
-          <span class="stag">RPA</span>
-          <span class="stag">Workflows</span>
-          <span class="stag">Integraciones</span>
+          <span class="stag">RPA</span><span class="stag">Workflows</span><span class="stag">Integraciones</span>
         </div>
       </div>
-
       <div class="servicio-card sr">
         <div class="servicio-emoji">💻</div>
         <h3>Desarrollo de software a medida</h3>
         <p>Construimos la herramienta exacta que tu operación necesita. Sin soluciones genéricas que solo funcionan a medias.</p>
         <div class="servicio-tags">
-          <span class="stag">Web</span>
-          <span class="stag">APIs</span>
-          <span class="stag">Portales</span>
+          <span class="stag">Web</span><span class="stag">APIs</span><span class="stag">Portales</span>
         </div>
       </div>
-
       <div class="servicio-card sr">
         <div class="servicio-emoji">🤝</div>
         <h3>Consultoría tecnológica</h3>
-        <p>Te ayudamos a elegir las herramientas correctas, ordenar tus sistemas y trazar un roadmap tecnológico realista para tu empresa.</p>
+        <p>Te ayudamos a elegir las herramientas correctas, ordenar tus sistemas y trazar un roadmap tecnológico realista.</p>
         <div class="servicio-tags">
-          <span class="stag">Diagnóstico</span>
-          <span class="stag">Roadmap</span>
-          <span class="stag">Estrategia</span>
+          <span class="stag">Diagnóstico</span><span class="stag">Roadmap</span><span class="stag">Estrategia</span>
         </div>
       </div>
-
       <div class="servicio-card sr">
         <div class="servicio-emoji">🧠</div>
         <h3>Inteligencia Artificial aplicada</h3>
-        <p>IA concreta para tu negocio: clasificación de documentos, asistentes internos, análisis predictivo y automatización inteligente.</p>
+        <p>IA concreta para tu negocio: clasificación de documentos, asistentes internos y análisis predictivo.</p>
         <div class="servicio-tags">
-          <span class="stag">LLMs</span>
-          <span class="stag">Clasificación</span>
-          <span class="stag">Análisis</span>
+          <span class="stag">LLMs</span><span class="stag">Clasificación</span><span class="stag">Análisis</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─────────────── POR QUÉ NUVIKA ─────────────── -->
+<!-- ═══════════════ POR QUÉ NUVIKA ═══════════════ -->
 <section id="porque">
   <div class="wrap">
     <div class="porque-grid">
 
-      <!-- columna izquierda -->
       <div class="porque-texto sr">
         <div class="eyebrow">Por qué Nuvika</div>
-        <h2>Tecnología accesible, resultados concretos</h2>
+        <h2>Tecnología accesible,<br>resultados concretos</h2>
         <p>No somos una consultora grande que te cobra por el aire. Somos un equipo pequeño, directo y comprometido con tu resultado.</p>
 
         <div class="porque-items">
-
           <div class="porque-item">
             <div class="porque-bullet">🎯</div>
             <div class="porque-item-txt">
@@ -884,110 +731,80 @@
               <p>Cada proyecto tiene objetivos claros desde el primer día. Si no lo podemos medir, no lo prometemos.</p>
             </div>
           </div>
-
           <div class="porque-item">
             <div class="porque-bullet">💬</div>
             <div class="porque-item-txt">
               <h3>Comunicación directa, siempre</h3>
-              <p>Hablas directo con quien trabaja en tu proyecto. Sin intermediarios, sin tickets que desaparecen.</p>
+              <p>Hablas directo con quien trabaja en tu proyecto. Sin intermediarios ni tickets que desaparecen.</p>
             </div>
           </div>
-
           <div class="porque-item">
             <div class="porque-bullet">🚀</div>
             <div class="porque-item-txt">
               <h3>Sin burocracia ni letra chica</h3>
-              <p>Procesos simples, contratos claros, plazos realistas. Nos importa que funcione, no hacer más papeles.</p>
+              <p>Procesos simples, contratos claros, plazos realistas. Nos importa que funcione.</p>
             </div>
           </div>
-
           <div class="porque-item">
             <div class="porque-bullet">🇨🇱</div>
             <div class="porque-item-txt">
               <h3>Hechos para la realidad chilena</h3>
-              <p>Entendemos cómo funcionan las PYMEs en Chile: sistemas tributarios, integración con SII, DTE y la forma de trabajar local.</p>
+              <p>Entendemos las PYMEs en Chile: integración con SII, DTE y la forma de trabajar local.</p>
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- columna derecha: panel de datos -->
       <div class="porque-panel sr">
         <div class="panel-titulo">Impacto típico en nuestros clientes</div>
-
         <div class="panel-stats">
-
           <div class="pstat">
             <div class="pstat-header">
               <span class="pstat-label">Reducción de tareas manuales</span>
               <span class="pstat-val">-75%</span>
             </div>
-            <div class="pstat-bar">
-              <div class="pstat-fill" data-width="75%" style="width:0%"></div>
-            </div>
+            <div class="pstat-bar"><div class="pstat-fill" data-width="75%" style="width:0%"></div></div>
           </div>
-
           <div class="pstat">
             <div class="pstat-header">
               <span class="pstat-label">Tiempo de implementación</span>
               <span class="pstat-val">2–6 semanas</span>
             </div>
-            <div class="pstat-bar">
-              <div class="pstat-fill" data-width="65%" style="width:0%"></div>
-            </div>
+            <div class="pstat-bar"><div class="pstat-fill" data-width="65%" style="width:0%"></div></div>
           </div>
-
           <div class="pstat">
             <div class="pstat-header">
               <span class="pstat-label">Satisfacción de clientes</span>
               <span class="pstat-val">98%</span>
             </div>
-            <div class="pstat-bar">
-              <div class="pstat-fill" data-width="98%" style="width:0%"></div>
-            </div>
+            <div class="pstat-bar"><div class="pstat-fill" data-width="98%" style="width:0%"></div></div>
           </div>
-
           <div class="pstat">
             <div class="pstat-header">
               <span class="pstat-label">Disponibilidad del equipo</span>
               <span class="pstat-val">Respuesta &lt;24h</span>
             </div>
-            <div class="pstat-bar">
-              <div class="pstat-fill" data-width="90%" style="width:0%"></div>
-            </div>
+            <div class="pstat-bar"><div class="pstat-fill" data-width="90%" style="width:0%"></div></div>
           </div>
-
         </div>
-
         <div class="panel-nums">
-          <div class="pnum">
-            <div class="pnum-n">+40</div>
-            <div class="pnum-l">Empresas</div>
-          </div>
-          <div class="pnum">
-            <div class="pnum-n">3×</div>
-            <div class="pnum-l">Productividad</div>
-          </div>
-          <div class="pnum">
-            <div class="pnum-n">5★</div>
-            <div class="pnum-l">Valoración</div>
-          </div>
+          <div class="pnum"><div class="pnum-n">+40</div><div class="pnum-l">Empresas</div></div>
+          <div class="pnum"><div class="pnum-n">3×</div><div class="pnum-l">Productividad</div></div>
+          <div class="pnum"><div class="pnum-n">5★</div><div class="pnum-l">Valoración</div></div>
         </div>
-
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ─────────────── CTA FINAL ─────────────── -->
+<!-- ═══════════════ CTA FINAL ═══════════════ -->
 <section id="cta">
   <div class="wrap">
     <div class="cta-box sr">
       <div class="eyebrow">Hablemos</div>
       <h2>¿Listo para hacer más<br><span class="txt-acento">con menos esfuerzo?</span></h2>
       <p>Cuéntanos tu desafío. En menos de 24 horas te respondemos con un diagnóstico concreto — sin costo, sin compromiso.</p>
-
       <div class="cta-btns">
         <a href="mailto:hola@nuvika.cl" class="btn btn-primario">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -998,16 +815,14 @@
           WhatsApp
         </a>
       </div>
-
       <p class="cta-nota">hola@nuvika.cl · +56 9 3633 4513 · Santiago, Chile</p>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── FOOTER ─────────────── -->
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer>
   <div class="footer-inner">
-
     <div class="footer-marca">
       <div class="footer-logo">Nuvika<span>SpA</span></div>
       <div class="footer-meta">
@@ -1015,66 +830,75 @@
         hola@nuvika.cl · Santiago, Chile
       </div>
     </div>
-
     <div class="footer-links">
       <a href="#servicios">Servicios</a>
       <a href="#porque">Nosotros</a>
       <a href="mailto:hola@nuvika.cl">Contacto</a>
     </div>
-
     <div class="footer-copy">
       © 2026 Nuvika SpA.<br>Todos los derechos reservados.
     </div>
-
   </div>
 </footer>
 
-<!-- ─────────────── WHATSAPP FLOTANTE ─────────────── -->
+<!-- ═══════════════ WHATSAPP ═══════════════ -->
 <a id="wa-btn"
    href="https://wa.me/56936334513?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20Nuvika."
-   target="_blank"
-   rel="noopener"
-   aria-label="Escríbenos por WhatsApp">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
+   target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- ─────────────── JS ─────────────── -->
+<!-- ═══════════════ JS ═══════════════ -->
 <script>
-  /* nav scroll */
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('solid', window.scrollY > 40);
-  });
+  /* ── SELECTOR DE TEMA ── */
+  const TEMAS = ['claro', 'oscuro', 'ia'];
+  const html  = document.documentElement;
 
-  /* menú móvil */
+  function setTema(t) {
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('nuvika-tema', t);
+    document.querySelectorAll('.theme-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.t === t));
+  }
+
+  // Restaurar preferencia guardada (o sistema)
+  const guardado = localStorage.getItem('nuvika-tema');
+  if (guardado && TEMAS.includes(guardado)) {
+    setTema(guardado);
+  } else {
+    setTema('claro');
+  }
+
+  document.querySelectorAll('.theme-btn').forEach(btn =>
+    btn.addEventListener('click', () => setTema(btn.dataset.t)));
+
+  /* ── NAV SCROLL ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () =>
+    nav.classList.toggle('solid', window.scrollY > 40));
+
+  /* ── MENÚ MÓVIL ── */
   document.getElementById('hamburger').addEventListener('click', () =>
     document.getElementById('mobile-drawer').classList.add('open'));
   document.getElementById('drawer-close').addEventListener('click', () =>
     document.getElementById('mobile-drawer').classList.remove('open'));
-  document.querySelectorAll('.drawer-link, #mobile-drawer .btn').forEach(el =>
+  document.querySelectorAll('.drawer-link, #mobile-drawer .btn-primario').forEach(el =>
     el.addEventListener('click', () =>
       document.getElementById('mobile-drawer').classList.remove('open')));
 
-  /* scroll reveal */
+  /* ── SCROLL REVEAL ── */
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.sr').forEach(el => io.observe(el));
 
-  /* animar barras cuando entran en viewport */
+  /* ── BARRAS ANIMADAS ── */
   const barIO = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        e.target.querySelectorAll('.pstat-fill').forEach(fill => {
-          fill.style.width = fill.dataset.width;
-        });
+        e.target.querySelectorAll('.pstat-fill').forEach(f => f.style.width = f.dataset.width);
         barIO.unobserve(e.target);
       }
     });
