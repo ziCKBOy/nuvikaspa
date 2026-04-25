@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <!-- Hex symbol -->
+  <polygon points="18,8 28,2 38,8 38,20 28,26 18,20" stroke="#00C8FF" stroke-width="2.2" fill="none"/>
+  <circle cx="28" cy="2" r="2.8" fill="#00C8FF"/>
+  <circle cx="28" cy="32" r="2.8" fill="#00C8FF" opacity="0.45"/>
+  <circle cx="10" cy="14" r="2.2" fill="#00C8FF" opacity="0.3"/>
+  <circle cx="46" cy="14" r="2.2" fill="#00C8FF" opacity="0.3"/>
+  <circle cx="44" cy="5" r="2.4" fill="#00C8FF" opacity="0.6"/>
+  <line x1="28" y1="2" x2="28" y2="0" stroke="#00C8FF" stroke-width="1.4" opacity="0.7"/>
+  <line x1="28" y1="26" x2="28" y2="29.2" stroke="#00C8FF" stroke-width="1.4" opacity="0.4"/>
+  <line x1="18" y1="14" x2="12.2" y2="14" stroke="#00C8FF" stroke-width="1.4" opacity="0.3"/>
+  <line x1="38" y1="14" x2="43.8" y2="14" stroke="#00C8FF" stroke-width="1.4" opacity="0.3"/>
+  <line x1="38" y1="8" x2="42" y2="3.5" stroke="#00C8FF" stroke-width="1.4" opacity="0.55"/>
+  <circle cx="28" cy="14" r="2.5" fill="#00C8FF" opacity="0.9"/>
+  <!-- NUVIKA wordmark -->
+  <text x="56" y="31" font-family="'Sora','Inter','Arial Black',sans-serif" font-weight="800" font-size="26" letter-spacing="-0.5" fill="#FFFFFF">NUVI<tspan fill="#00C8FF">KA</tspan></text>
+</svg>
