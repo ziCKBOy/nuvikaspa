@@ -1,0 +1,23 @@
+{
+  "name": "nuvikaspa",
+  "version": "1.0.0",
+  "description": "Nuvika SpA - Servicios IT, automatización e inteligencia artificial para PYMEs",
+  "type": "module",
+  "scripts": {
+    "dev": "npx http-server -p 3000",
+    "build": "esbuild speed-insights.js --bundle --outfile=dist/speed-insights.bundle.js --format=iife",
+    "lint": "echo 'No linter configured for static HTML'"
+  },
+  "keywords": [
+    "static-site",
+    "nuvika"
+  ],
+  "author": "Nuvika SpA",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.14"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}
