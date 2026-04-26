@@ -1,13 +1,5 @@
 {
   "outputDirectory": ".",
-  "functions": {
-    "api/contact.js": {
-      "runtime": "edge"
-    }
-  },
-  "rewrites": [
-    { "source": "/api/contact", "destination": "/api/contact.js" }
-  ],
   "headers": [
     {
       "source": "/styles.css",
