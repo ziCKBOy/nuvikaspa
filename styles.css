@@ -283,8 +283,9 @@ h3 { font-size: 1.05rem; font-weight: 700; }
 }
 
 .hero-sub {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--txt-muted); max-width: 540px; line-height: 1.8;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: #8eb8d4; max-width: 520px; line-height: 1.8;
+  animation: hero-sub-in 0.7s cubic-bezier(.4,0,.2,1) 1.5s both;
 }
 .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: .3rem; }
 
@@ -678,5 +679,66 @@ footer { background: var(--bg-alt); border-top: 1px solid var(--borde); padding:
   }
   .contact-form-footer .btn {
     justify-content: center;
+  }
+}
+
+/* ════════════════════════════════════════
+   HERO TAGLINE — título principal animado
+════════════════════════════════════════ */
+@keyframes tagline-up {
+  from { opacity: 0; transform: translateY(22px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes tagline-accent-in {
+  from { opacity: 0; transform: translateY(14px); letter-spacing: .3em; }
+  to   { opacity: 1; transform: translateY(0);    letter-spacing: .12em; }
+}
+@keyframes hero-sub-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-tagline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  text-align: center;
+  color: #e8f4ff;
+}
+
+.hero-tagline-line {
+  display: block;
+  opacity: 0;
+  animation: tagline-up 0.75s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-tagline-line--2 {
+  animation-delay: 0.12s;
+  color: #c8e6ff;
+}
+.hero-tagline-line--3 {
+  animation: tagline-accent-in 0.8s cubic-bezier(.22,1,.36,1) 0.28s forwards;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: .6rem;
+  background: linear-gradient(90deg, var(--acento), var(--acento2), #7dd3fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+}
+
+@media (max-width: 600px) {
+  .hero-tagline {
+    letter-spacing: -0.5px;
+  }
+  .hero-tagline-line--3 {
+    letter-spacing: .06em;
   }
 }
