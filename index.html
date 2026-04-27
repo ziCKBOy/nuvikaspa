@@ -45,6 +45,38 @@
   </div>
 
   <div class="nav-right">
+    <div class="theme-selector-wrap" id="theme-selector-wrap">
+      <button class="theme-selector-trigger" id="theme-trigger" aria-label="Cambiar tema" title="Cambiar tema"></button>
+      <div class="theme-selector-panel" id="theme-panel" role="dialog" aria-label="Selección de tema">
+        <div class="theme-panel-title">Tema visual</div>
+        <div class="theme-grid">
+          <button class="theme-btn" data-t="oceano"       title="Océano" aria-pressed="true"></button>
+          <button class="theme-btn" data-t="oceano-light" title="Océano Light" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="claro"        title="Claro" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="oscuro"       title="Oscuro" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="ia"           title="IA" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="neon"         title="Neon" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="aurora"       title="Aurora" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="sunset"       title="Sunset" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="slate"        title="Slate" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="carbon"       title="Carbon" aria-pressed="false"></button>
+          <button class="theme-btn" data-t="rosa"         title="Rosa" aria-pressed="false"></button>
+        </div>
+        <div class="theme-names">
+          <span class="theme-name-lbl">Océano</span>
+          <span class="theme-name-lbl">O. Light</span>
+          <span class="theme-name-lbl">Claro</span>
+          <span class="theme-name-lbl">Oscuro</span>
+          <span class="theme-name-lbl">IA</span>
+          <span class="theme-name-lbl">Neon</span>
+          <span class="theme-name-lbl">Aurora</span>
+          <span class="theme-name-lbl">Sunset</span>
+          <span class="theme-name-lbl">Slate</span>
+          <span class="theme-name-lbl">Carbon</span>
+          <span class="theme-name-lbl">Rosa</span>
+        </div>
+      </div>
+    </div>
     <a href="mailto:contacto@nuvika.cl" class="btn btn-primario nav-cta">Conversemos</a>
     <div class="hamburger" id="hamburger">
       <span></span><span></span><span></span>
@@ -59,6 +91,22 @@
   <a href="#porque"    class="drawer-link">Nosotros</a>
   <a href="#cta"       class="drawer-link">Contacto</a>
   <a href="mailto:contacto@nuvika.cl" class="btn btn-primario" style="margin-top:.3rem;">Conversemos</a>
+  <div class="drawer-theme-row">
+    <span class="drawer-theme-label">Tema</span>
+    <div class="drawer-theme-btns">
+      <button class="theme-btn" data-t="oceano"       title="Océano"></button>
+      <button class="theme-btn" data-t="oceano-light" title="Océano Light"></button>
+      <button class="theme-btn" data-t="claro"        title="Claro"></button>
+      <button class="theme-btn" data-t="oscuro"       title="Oscuro"></button>
+      <button class="theme-btn" data-t="ia"           title="IA"></button>
+      <button class="theme-btn" data-t="neon"         title="Neon"></button>
+      <button class="theme-btn" data-t="aurora"       title="Aurora"></button>
+      <button class="theme-btn" data-t="sunset"       title="Sunset"></button>
+      <button class="theme-btn" data-t="slate"        title="Slate"></button>
+      <button class="theme-btn" data-t="carbon"       title="Carbon"></button>
+      <button class="theme-btn" data-t="rosa"         title="Rosa"></button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════ HERO ═══════════════ -->
@@ -394,6 +442,43 @@
 
 <!-- ═══════════════ JS ═══════════════ -->
 <script>
+  /* ── Temas ── */
+  const TEMA_KEY = 'nuvika-tema';
+  const htmlEl   = document.documentElement;
+
+  function setTema(t) {
+    htmlEl.setAttribute('data-theme', t);
+    localStorage.setItem(TEMA_KEY, t);
+    document.querySelectorAll('.theme-btn').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.t === t ? 'true' : 'false'));
+  }
+
+  (function () {
+    const saved = localStorage.getItem(TEMA_KEY);
+    if (saved) setTema(saved);
+    else setTema(htmlEl.getAttribute('data-theme') || 'oceano');
+  })();
+
+  const themeTrigger = document.getElementById('theme-trigger');
+  const themePanel   = document.getElementById('theme-panel');
+
+  themeTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    themePanel.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.theme-btn').forEach(btn =>
+    btn.addEventListener('click', () => {
+      setTema(btn.dataset.t);
+      themePanel.classList.remove('open');
+      document.getElementById('mobile-drawer').classList.remove('open');
+    }));
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('theme-selector-wrap').contains(e.target))
+      themePanel.classList.remove('open');
+  });
+
   /* NAV scroll */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () =>
