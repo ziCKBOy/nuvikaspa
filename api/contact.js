@@ -9,16 +9,17 @@
 
 export const config = { runtime: 'edge' };
 
-const ALLOWED_ORIGIN = 'https://nuvika.cl';
+// Permite nuvika.cl, subdominios de nuvika.cl, y cualquier *.vercel.app (preview deploys)
+const ORIGIN_RE = /^https:\/\/(([a-z0-9-]+\.)*nuvika\.cl|([a-z0-9-]+\.)*vercel\.app)$/i;
 
 export default async function handler(req) {
   // CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: corsHeaders() });
+    return new Response(null, { status: 204, headers: corsHeaders(req) });
   }
 
   if (req.method !== 'POST') {
-    return json({ error: 'Método no permitido' }, 405);
+    return json({ error: 'Método no permitido' }, 405, req);
   }
 
   let body;
@@ -32,13 +33,13 @@ export default async function handler(req) {
 
   // Validación
   if (!nombre?.trim() || !email?.trim() || !mensaje?.trim()) {
-    return json({ error: 'Faltan campos obligatorios' }, 422);
+    return json({ error: 'Faltan campos obligatorios' }, 422, req);
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return json({ error: 'Email inválido' }, 422);
+    return json({ error: 'Email inválido' }, 422, req);
   }
   if (mensaje.length > 2000) {
-    return json({ error: 'Mensaje demasiado largo (máx 2000 caracteres)' }, 422);
+    return json({ error: 'Mensaje demasiado largo (máx 2000 caracteres)' }, 422, req);
   }
 
   const apiKey  = process.env.RESEND_API_KEY;
@@ -46,7 +47,7 @@ export default async function handler(req) {
 
   if (!apiKey) {
     console.error('RESEND_API_KEY no configurada');
-    return json({ error: 'Error de configuración del servidor' }, 500);
+    return json({ error: 'Error de configuración del servidor' }, 500, req);
   }
 
   try {
@@ -69,26 +70,29 @@ export default async function handler(req) {
     if (!resendRes.ok) {
       const err = await resendRes.json().catch(() => ({}));
       console.error('Resend error:', err);
-      return json({ error: 'No se pudo enviar el mensaje. Intenta por WhatsApp.' }, 502);
+      return json({ error: 'No se pudo enviar el mensaje. Intenta por WhatsApp.' }, 502, req);
     }
 
-    return json({ ok: true, message: 'Mensaje enviado correctamente' }, 200);
+    return json({ ok: true, message: 'Mensaje enviado correctamente' }, 200, req);
   } catch (err) {
     console.error('Fetch error:', err);
-    return json({ error: 'Error de red interno' }, 500);
+    return json({ error: 'Error de red interno' }, 500, req);
   }
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, req = null) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders() },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(req) },
   });
 }
 
-function corsHeaders() {
+function corsHeaders(req) {
+  const origin = req?.headers?.get('origin') || '';
+  const allowed = ORIGIN_RE.test(origin) ? origin : 'https://nuvika.cl';
   return {
-    'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,
+    'Access-Control-Allow-Origin':  allowed,
+    'Vary':                         'Origin',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
